@@ -1,0 +1,40 @@
+resource "azurerm_virtual_network" "myvnet" {
+  name = "myvnet"
+  address_space = ["10.0.0.0/16"]
+  resource_group_name = azurerm_resource_group.myrg.name
+  location = azurerm_resource_group.myrg.location
+  tags = {
+    "name":"my-vnet"
+    "env":"dev"
+  }
+}
+
+resource "azurerm_subnet" "mysubnet" {
+    name = "mysubnet"
+    resource_group_name = azurerm_resource_group.myrg.name
+    virtual_network_name = azurerm_virtual_network.myvnet.name
+    address_prefixes = ["10.0.2.0/24"]  
+}
+
+resource "azurerm_public_ip" "mypublicip" {
+     name = "my-pip"
+     resource_group_name = azurerm_resource_group.myrg.name
+     location = azurerm_resource_group.myrg.location
+     allocation_method = "Static"
+     tags = {
+       "env":"dev"
+     }
+}
+
+resource "azurerm_network_interface" "myvmnic" {
+    name = "myvmnic"
+    resource_group_name = azurerm_resource_group.myrg.name
+    location = azurerm_resource_group.myrg.location
+    ip_configuration {
+      name = "intrnal"
+      subnet_id = azurerm_subnet.mysubnet.id
+      private_ip_address_allocation = "Dynamic"
+      public_ip_address_id = azurerm_public_ip.mypublicip.id
+    }
+  
+}
