@@ -1,11 +1,12 @@
 resource "azurerm_linux_virtual_machine" "myvm" {
-    name = "mylinuxvm-1"
+  count = 2
+    name = "mylinuxvm-${count.index}"
     computer_name = "devlinuxvm-1"
     resource_group_name = azurerm_resource_group.myrg.name
     location = azurerm_resource_group.myrg.location
     size = "Standard_DS1_V2"
     admin_username = "Adminuser"
-    network_interface_ids = [azurerm_network_interface.vmnic.id]
+    network_interface_ids = [element(azurerm_network_interface.myvmninc[*].id,count.index)]
 
    admin_ssh_key {
      username = "Adminuser"
@@ -13,7 +14,7 @@ resource "azurerm_linux_virtual_machine" "myvm" {
    }
 
    os_disk {
-     name = "osdisk"
+     name = "osdisk-${count.index}"
      caching = "ReadWrite"
      storage_account_type = "Standard_LRS"
    }
@@ -23,5 +24,5 @@ resource "azurerm_linux_virtual_machine" "myvm" {
     sku = "83-gen2"
     version = "latest"
   }
-  custom_data = filebase64("${path.module}/app-scripts/app1-cloud-init.txt")
+  #custom_data = filebase64("${path.module}/app-scripts/app1-cloud-init.txt")
 }

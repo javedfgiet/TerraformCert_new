@@ -17,7 +17,7 @@ resource "azurerm_public_ip" "mypublicip" {
     allocation_method = "Static"
     resource_group_name = azurerm_resource_group.myrg.name
     location = azurerm_resource_group.myrg.location
-    domain_name_label = "app1-vm-${random_string.myrandon.id}"
+    domain_name_label = "app1-vm-${random_string.myrandom.id}"
     tags = {
       "dev":"env"
     }
