@@ -1,0 +1,35 @@
+resource "azurerm_virtual_network" "myvnet" {
+  name = "myvnet-1"
+  resource_group_name = azurerm_resource_group.myrg.name
+  location = azurerm_resource_group.myrg.location
+  address_space = ["10.0.0.0/16"]
+}
+
+resource "azurerm_subnet" "mysubnet" {
+  name = "mysubnet-1"
+  virtual_network_name = azurerm_virtual_network.myvnet.name
+  resource_group_name = azurerm_resource_group.myrg.name
+  address_prefixes = ["10.0.2.0/24"]
+}
+
+resource "azurerm_public_ip" "mypublic_ip" {
+  for_each = toset(["vm1","vm2"])
+  name = "mypublicip-${each.key}"
+  resource_group_name = azurerm_resource_group.myrg.name
+  location = azurerm_resource_group.myrg.location
+  allocation_method = "Static"
+domain_name_label = "app1-${each.key}-${random_string.myrandom.id}"
+}
+
+resource "azurerm_network_interface" "myvmnic" {
+  for_each = toset(["vm1","vm2"])
+  name = "vmnic-${each.key}"
+  resource_group_name = azurerm_resource_group.myrg.name
+  location = azurerm_resource_group.myrg.location
+  ip_configuration {
+    name = "internal-${each.key}"
+    private_ip_address_allocation = "Dynamic"
+    subnet_id = azurerm_subnet.mysubnet.id
+    public_ip_address_id = azurerm_public_ip.mypublic_ip[each.key].id
+  }
+}
