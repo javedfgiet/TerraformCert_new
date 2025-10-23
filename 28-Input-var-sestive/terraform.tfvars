@@ -8,9 +8,12 @@ db_name="mydb201"
 db_storage_mb=5120
 db_auto_grow_enable=true
 
-db_td_policy={
-state = "Enabled",
-retention_days = 10,
-email_account_admins = "Enabled"
-email_addresses = [ "javedfgiet@gmail.com" ]
-}
+# db_td_policy={
+# state = "Enabled",
+# retention_days = 10,
+# email_account_admins = "Enabled"
+# email_addresses = [ "javedfgiet@gmail.com" ]
+# }
+
+
+db_td_policy=["Enabled",10,"Enabled",["javedfgiet@gmail.com"]]

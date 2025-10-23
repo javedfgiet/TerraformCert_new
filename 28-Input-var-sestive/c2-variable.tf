@@ -89,12 +89,18 @@ variable "db_auto_grow_enable" {
   type = bool
 }
 
+# variable "db_td_policy" {
+#   description = "Azure MySQL DB Threat Detection Policy"
+#   type = object({
+#     state = string,
+#     retention_days=number
+#     email_account_admins=string
+#     email_addresses=list(string)
+#   })
+# }
+
 variable "db_td_policy" {
   description = "Azure MySQL DB Threat Detection Policy"
-  type = object({
-    state = string,
-    retention_days=number
-    email_account_admins=string
-    email_addresses=list(string)
-  })
+  type = tuple([ string, number, string, list(string) ])
 }
+
