@@ -1,0 +1,6 @@
+business_unit                 = "it"
+resource_group_name           = "rg"
+virtual_network_name          = "vnet"
+subnet_name                   = "mysubnet"
+virtual_network_address_space = ["10.3.0.0/16", "10.4.0.0/16", "10.5.0.0/16"]
+resource_group_location="eastus2"
