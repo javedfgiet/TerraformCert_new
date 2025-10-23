@@ -88,3 +88,13 @@ variable "db_auto_grow_enable" {
   description = "Az MySQl Datasbe - Enable or Disable Auto grow Feature"
   type = bool
 }
+
+variable "db_td_policy" {
+  description = "Azure MySQL DB Threat Detection Policy"
+  type = object({
+    state = string,
+    retention_days=number
+    email_account_admins=string
+    email_addresses=list(string)
+  })
+}
