@@ -5,6 +5,7 @@ resource "azurerm_mssql_server" "mysqlserver" {
   administrator_login = var.db_username
   administrator_login_password = var.db_password
   version = "12.0"
+  
 
   
 }
@@ -14,5 +15,13 @@ resource "azurerm_mssql_database" "mysqldb" {
   server_id = azurerm_mssql_server.mysqlserver.id
   sku_name = "S0"
   max_size_gb = 2
+  
+  
+  threat_detection_policy {
+  state = var.db_td_policy.state
+  retention_days = var.db_td_policy.retention_days
+  email_account_admins = var.db_td_policy.email_account_admins
+  email_addresses = var.db_td_policy.email_addresses
+  }
   
 }
