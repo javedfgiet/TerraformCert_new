@@ -48,5 +48,4 @@ output "virtual_network_name_keys_function" {
 output "virtual_network_name_value_function" {
   description = "Virtual Network- Values Function"
   value = values({for env,vnet in azurerm_virtual_network.myvnet: env=>vnet.name})
-  
 }
